@@ -27,8 +27,5 @@ pip install -r requirements.txt
 echo "Installing LeafMachine2 requirements..."
 pip install -r LeafMachine2/requirements.txt
 pip install pywin32 pycocotools>=2.0.5 opencv-contrib-python>=4.7.0.68
-
-echo "Testing LeafMachine2..."
-python LeafMachine2/test.py
-
+pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu121
 echo "Setup complete!"

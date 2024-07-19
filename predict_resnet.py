@@ -8,7 +8,7 @@ import pandas as pd
 import argparse
 import yaml
 
-from LeafMachine2.machine.machine_censor_components import machine
+from LeafMachine2.leafmachine2.machine.machine_censor_components import machine
 
 '''
 IMG_RES = 512 for ResNet_3_1
@@ -36,7 +36,11 @@ class ImagePredictor:
         self.model = models.resnet50(pretrained=False)
         num_ftrs = self.model.fc.in_features
         self.model.fc = nn.Linear(num_ftrs, self.num_classes)
-        self.model.load_state_dict(torch.load(self.model_path))
+        # Update model_path_full to include the base directory
+        base_dir = os.path.dirname(__file__)
+        model_path_full = os.path.join(base_dir, self.model_path)
+
+        self.model.load_state_dict(torch.load(model_path_full))
         self.model = self.model.to(self.device)
         self.model.eval()
 

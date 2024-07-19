@@ -5,7 +5,9 @@ __pycache__/
 .venv_dioecy/
 # C extensions
 *.so
-
+release_v-2-3.zip
+release_v-2-2.zip
+release_v-2-1.zip
 # Distribution / packaging
 .Python
 build/
