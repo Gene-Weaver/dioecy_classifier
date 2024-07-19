@@ -5,6 +5,10 @@ from tqdm import tqdm
 
 
 '''
+This is used to parition the training data and then upload the dataset to hugging face
+
+
+
 huggingface-cli login
 
 dataset/
@@ -105,9 +109,6 @@ def main():
 
     create_and_upload_hf_dataset(dataset_dir, dataset_name, dataset_path)
     
-    
-
-
 
     # After dataset creation, to print out the class to id mapping, load the dataset from disk
     dataset_path = 'D:/Dropbox/SwinV2_Classifier/data/training_v_3/dataset_dict'

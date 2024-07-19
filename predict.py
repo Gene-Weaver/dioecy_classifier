@@ -19,6 +19,8 @@ from train import CustomSwinv2ForImageClassification, calculate_class_weights
 # ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 '''
+This was  used to test Swin-V2 but is not currently in use
+
 both_both: 0
 both_flower: 1
 female_both: 2

@@ -14,6 +14,40 @@ from collections import OrderedDict
 from PIL import ImageFile, Image
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
+'''
+This was was used to train the resnet classifier that we've had success with including:
+
+    ResNet_v_1_epoch_15 = val 74.29% train 96.53%
+    ResNet_v_1_epoch_25 = val 74.76% train 97.89%
+    ResNet_v_2 = val 76.75% train 99.89% (lowest is both_flower female_both)
+    ResNet_v_2_2 = val 68.13% train 98.67% (***ResNet_v_2_2 uses censored training images, just like ResNeXt_v_2_2***)
+    ResNet_v_2_3 is shuffle FAILED
+
+    ResNet_v_3_1 has new dataset as of 7-15-24, redone training classes, IMG_RES = 512x512, e120, uses LM2 censored images
+        Accuracy score for each class: (TEST)
+            both_both: 32.14%
+            both_flower: 11.76%
+            female_flower: 55.56%
+            female_fruit: 93.09%
+            male_flower: 92.53%
+            sterile: 85.19%
+            Overall accuracy: 85.84%
+        Accuracy score for each class: (TRAIN)
+            both_both: 100.00%
+            both_flower: 100.00%
+            female_flower: 100.00%
+            female_fruit: 100.00%
+            male_flower: 99.95%
+            sterile: 100.00%
+            Overall accuracy: 99.98%
+
+    ResNet_v_3_2 is with IMG_RES = 1024x1024
+        Accuracy score for each class: (TEST)
+
+        Accuracy score for each class: (TRAIN)
+
+
+'''
 IMG_RES = 1024 #512
 N_CLASSES = 6
 
@@ -334,33 +368,7 @@ if __name__ == "__main__":
         )
         classifier.train()
 
-    '''
-    ResNet_v_1_epoch_15 = val 74.29% train 96.53%
-    ResNet_v_1_epoch_25 = val 74.76% train 97.89%
-    ResNet_v_2 = val 76.75% train 99.89% (lowest is both_flower female_both)
-    ResNet_v_2_2 = val 68.13% train 98.67% (***ResNet_v_2_2 uses censored training images, just like ResNeXt_v_2_2***)
-    ResNet_v_2_3 is shuffle FAILED
-
-    ResNet_v_3_1 has new dataset as of 7-15-24, redone training classes, IMG_RES = 512, e250 = val % train %
-        Accuracy score for each class: (TEST)
-            both_both: 32.14%
-            both_flower: 11.76%
-            female_flower: 55.56%
-            female_fruit: 93.09%
-            male_flower: 92.53%
-            sterile: 85.19%
-            Overall accuracy: 85.84%
-        Accuracy score for each class: (TRAIN)
-            both_both: 100.00%
-            both_flower: 100.00%
-            female_flower: 100.00%
-            female_fruit: 100.00%
-            male_flower: 99.95%
-            sterile: 100.00%
-            Overall accuracy: 99.98%
-
-    ResNet_v_3_2 is with IMG_RES = 1024
-    '''
+    
     if do_eval:
         print('Eval')
         # predictor = ImagePredictor(model_path='D:/Dropbox/SwinV2_Classifier/ResNet_v_1_epoch_15.pth')
