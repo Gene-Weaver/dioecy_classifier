@@ -1,0 +1,13 @@
+torch
+transformers 
+wandb  
+datasets
+tqdm
+Pillow
+huggingface_hub
+pandas
+torchvision
+accelerate
+scikit-learn
+seaborn
+matplotlib
