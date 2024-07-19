@@ -19,10 +19,11 @@ from torchvision import transforms
 from torchvision.transforms import RandomHorizontalFlip, RandomVerticalFlip, ColorJitter, RandomRotation
 from datasets import load_dataset, concatenate_datasets
 
-# Allow loading of truncated images
+'''
+This was  used to test Swin-V2 but is not currently in use
+'''
+# Allow loading of truncated images is required because a few of the images are corrupted
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-
 
 class CustomSwinv2ForImageClassification(Swinv2ForImageClassification):
     def __init__(self, config, class_weights=None):

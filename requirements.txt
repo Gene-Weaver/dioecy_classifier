@@ -11,3 +11,4 @@ accelerate
 scikit-learn
 seaborn
 matplotlib
+aiofiles
