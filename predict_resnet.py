@@ -18,10 +18,17 @@ IMG_RES = 512
 N_CLASSES = 6
 
 
+CLASS_ID = {
+    0:'both_both',
+    1:'both_flower',
+    2:'female_flower',
+    3:'female_fruit',
+    4:'male_flower',
+    5:'sterile',}
 
 class ImagePredictor:
-    def __init__(self, model_path, num_classes=N_CLASSES):
-        self.model_path = model_path
+    def __init__(self, model_name, num_classes=N_CLASSES):
+        self.model_name = model_name
         self.num_classes = num_classes
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -36,9 +43,9 @@ class ImagePredictor:
         self.model = models.resnet50(pretrained=False)
         num_ftrs = self.model.fc.in_features
         self.model.fc = nn.Linear(num_ftrs, self.num_classes)
-        # Update model_path_full to include the base directory
+        # Update model_name to include the base directory
         base_dir = os.path.dirname(__file__)
-        model_path_full = os.path.join(base_dir, self.model_path)
+        model_path_full = os.path.join(base_dir, 'models', self.model_name)
 
         self.model.load_state_dict(torch.load(model_path_full))
         self.model = self.model.to(self.device)
@@ -63,22 +70,26 @@ def process_directory(input_dir, predictor):
             if file.lower().endswith(('.png', '.jpg', '.jpeg')):
                 image_path = os.path.join(root, file)
                 prediction = predictor.predict_image(image_path)
+                prediction_str = CLASS_ID[prediction]
                 results.append({
                     'image_name': file,
                     'full_path': image_path,
-                    'prediction': prediction
+                    'prediction': prediction_str
                 })
 
     output_csv = os.path.basename(input_dir.rstrip('/\\')) + '_predictions.csv'
+    path_output_csv = os.path.join(os.path.dirname(input_dir), output_csv)
     df = pd.DataFrame(results)
-    df.to_csv(output_csv, index=False)
-    print(f"Predictions saved to {output_csv}")
+    df.to_csv(path_output_csv, index=False)
+    print(f"Predictions saved to {path_output_csv}")
 
 
 def run_censoring(config_path):
     # Run the LeafMachine2 censoring process
     dir_home = os.path.dirname(config_path)
     machine(config_path, dir_home, None)
+
+
 
 
 if __name__ == "__main__":
@@ -90,7 +101,7 @@ if __name__ == "__main__":
 
     # Get the input directory and model path from the configuration
     input_dir = config['leafmachine']['project']['dir_images_local']
-    model_path = config.get('model_path', '/models/ResNet_v_3_1.pth')
+    model_name = 'ResNet_v_3_1.pth'
 
     # Run the censoring process
     run_censoring(config_path)
@@ -101,6 +112,7 @@ if __name__ == "__main__":
         config['leafmachine']['project']['run_name']
     )
 
+    print("Running ResNet classifier")
     # Predict using the censored images
-    predictor = ImagePredictor(model_path=model_path)
-    process_directory(censored_output_dir, predictor)
+    predictor = ImagePredictor(model_name=model_name)
+    process_directory(os.path.join(censored_output_dir,'Archival_Components_Censored'), predictor)

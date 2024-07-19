@@ -2,6 +2,7 @@ from datasets import DatasetDict, Dataset, Image, ClassLabel, Features, load_fro
 import os
 from PIL import Image as PILImage, ImageFile
 from tqdm import tqdm
+from datasets import load_dataset
 
 
 '''
@@ -92,6 +93,18 @@ def print_image_labels(dataset):
         # Extracting the filename from the file path
         print(f"Image: Class Label: {class_label}, Class Name: {class_name}")
 
+def get_class_names(dataset_name):
+    # Load the dataset info from Hugging Face
+    dataset = load_dataset(dataset_name, split='train', streaming=True)
+    
+    # Access the features of the dataset
+    features = dataset.features
+    
+    # Get the class names from the 'label' feature
+    class_names = features['label'].names
+
+    # Return the class names
+    return class_names
 
 def main():
     '''
@@ -106,6 +119,9 @@ def main():
     dataset_dir = 'D:/Dropbox/SwinV2_Classifier/data/training_v_3'
     dataset_name = 'dioecy_Dioscorea_v-1-3'
     dataset_path = 'D:/Dropbox/SwinV2_Classifier/data/training_v_3/dataset_dict'
+
+    class_names = get_class_names('phyloforfun/dioecy_Dioscorea_v-1-3')
+
 
     create_and_upload_hf_dataset(dataset_dir, dataset_name, dataset_path)
     
